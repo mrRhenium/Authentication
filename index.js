@@ -3,7 +3,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const cors = require("cors");
+
+// import other files and folders
+const corsProtection = require("./protection/cors_folder/corsproperty");
 
 // define variables
 const port = 3000;
@@ -36,12 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // 3. cors
 // share the data/info from other servers to our server
-app.use(
-  cors({
-    origin: "http://localhost:2000",
-    methods: ["GET", "PUT"],
-  })
-);
+app.use(corsProtection);
 //
 //
 
