@@ -35,12 +35,17 @@ router
       const currName = req.body.name;
       const user = await User.findOne({ name: currName });
 
+      console.log(user);
+
       if (user) {
-        res.send("Already have an Account");
+        // res.send(JSON.stringify({ msg: "Already have an Account" }));
+
+        res.send({ msg: "Already have an Account" });
       } //
       else {
         const result = await User.create(req.body);
         res.json(result);
+        // res.send(result);
       }
 
       //
@@ -53,7 +58,7 @@ router
       //
 
       const users = await User.deleteMany();
-      res.json(users);
+      res.send(users);
 
       //
     } catch (err) {
@@ -73,14 +78,18 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ name: currName });
 
     if (user && user.password == req.body.password) {
-      res.send("SuccessFully Login");
-      // res.redirect("/");
+      // res.send({ msg: "SuccessFully Login" });
+
+      //redirect
+      res.redirect("/");
+
+      //
     } //
     else if (user && user.password != req.body.password) {
-      res.send("password is not match");
+      res.send({ msg: "password is not match" });
     } //
     else {
-      res.send("Not have an Account");
+      res.send({ msg: "Not have an Account" });
     }
 
     //

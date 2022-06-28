@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Page</title>
+  </head>
+  <body>
+    <h1>Register Page</h1>
+    <div class="container">
+      <form action="http://localhost:3000/user/register" method="post">
+        <!--  -->
+
+        <!--  -->
+        <label for="name"> Name</label>
+        <input type="text" name="name" id="name" required />
+        <br />
+        <!--  -->
+
+        <!--  -->
+        <label for="password"> Password</label>
+        <input type="password" name="password" id="password" required />
+        <br />
+        <!--  -->
+
+        <!--  -->
+        <input type="submit" value="Submit" />
+        <!--  -->
+
+        <!--  -->
+      </form>
+
+      <br />
+      <a href="/public/login.html">Login</a>
+      <hr />
+      <br />
+      <button class="get_btn">Get data</button>
+      <button class="submit_btn">Sumit</button>
+      <button class="delete_btn">Delete</button>
+    </div>
+    <script>
+      const submit_btn = document.querySelector(".submit_btn");
+
+      const submitfun = async () => {
+        try {
+          //
+
+          const data = await fetch("http://localhost:3000/user/register", {
+            method: "POST",
+            headers: { "content-Type": "application/json" },
+            body: JSON.stringify({
+              name: "nitesh",
+              password: "1234",
+            }),
+          });
+
+          const sd = await data.json();
+          console.log(sd);
+
+          //
+        } catch (err) {
+          console.log(err);
+        }
+
+        //
+      };
+
+      submit_btn.addEventListener("click", () => {
+        console.log("submit clicked 1");
+        submitfun();
+      });
+
+      // delete functionality
+      const delete_btn = document.querySelector(".delete_btn");
+
+      const deletefun = async () => {
+        try {
+          //
+
+          const data = await fetch("http://localhost:3000/user/register", {
+            method: "Delete",
+          });
+          if (data) {
+            console.log("Deleted Successfully");
+          } else {
+            console.log("something is wrong");
+          }
+
+          //
+        } catch (err) {
+          console.log(err);
+        }
+
+        //
+      };
+
+      delete_btn.addEventListener("click", () => {
+        console.log("delete clicked 1");
+        deletefun();
+      });
+
+      const get_btn = document.querySelector(".get_btn");
+      const getfun = async () => {
+        try {
+          //
+
+          const data = await fetch("http://localhost:3000/user/register");
+
+          const d = await data.json();
+          console.log(d);
+
+          //
+        } catch (err) {
+          console.log(err);
+        }
+
+        //
+      };
+
+      get_btn.addEventListener("click", () => {
+        console.log("get clicked 1");
+        getfun();
+      });
+
+      //
+    </script>
+  </body>
+</html>

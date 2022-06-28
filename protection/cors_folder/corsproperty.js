@@ -25,7 +25,7 @@ const corsOptionDelegate = (req, callback) => {
     corsOptions = {
       origin: false,
     };
-    callback(new Error("Prohibited"), corsOptions);
+    callback(null, corsOptions);
 
     //
   }
