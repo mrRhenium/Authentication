@@ -2,10 +2,12 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
 // import other files and folders
 const corsProtection = require("./protection/cors_folder/corsproperty");
+const verifyUser = require("./protection/authentication/authenticate");
 
 // define variables
 const port = 3000;
@@ -36,18 +38,22 @@ app.use(bodyParser.json());
 // parse the req.body (url formate body) from the client browser
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// 3. cors
+// 3. parse the upcoming cookies
+app.use(cookieParser());
+
+// 4. cors
 // share the data/info from other servers to our server
 app.use(corsProtection);
 //
 //
 
 // ********************************************
-// redirec to diffrent type of pages pages
+// redirec to diffrent type of pages
 // *********************************************
 
 //1. home page of webApp
-app.get("/", (req, res) => {
+app.get("/", verifyUser, (req, res) => {
+  // console.log(req.cookies);
   res.send("hello World !! Home page of WebApp");
 });
 

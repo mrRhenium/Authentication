@@ -44,7 +44,9 @@ router
       } //
       else {
         const result = await User.create(req.body);
-        res.json(result);
+        // res.json(result);
+        res.redirect("http://127.0.0.1:5500/public/login.html");
+
         // res.send(result);
       }
 
@@ -80,7 +82,7 @@ router.post("/login", async (req, res) => {
     if (user && user.password == req.body.password) {
       // res.send({ msg: "SuccessFully Login" });
 
-      //redirect
+      res.cookie("user", `${user.name}`, { maxAge: 60000 });
       res.redirect("/");
 
       //
