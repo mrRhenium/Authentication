@@ -4,6 +4,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const User = require("./model/user");
+
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 // import other files and folders
 const corsProtection = require("./protection/cors_folder/corsproperty");
@@ -51,6 +55,43 @@ app.use(corsProtection);
 // redirec to diffrent type of pages
 // *********************************************
 
+app.use(passport.initialize());
+
+passport.use(
+  new LocalStrategy({ usernameField: "name" }, function (
+    username,
+    password,
+    done
+  ) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false);
+      }
+      if (user.password != password) {
+        return done(null, false);
+      }
+      return done(null, user);
+    });
+  })
+);
+
+// passport.serializeUser(function (user, done) {
+//   done(null, user.id);
+// });
+
+// passport.deserializeUser(function (id, done) {
+//   User.findById(id, function (err, user) {
+//     done(err, user);
+//   });
+// });
+
+app.post("/user/login", passport.authenticate("local"), (req, res) => {
+  res.send("hello World !! Home page of WebApp");
+});
+
 //1. home page of webApp
 app.get("/", verifyUser, (req, res) => {
   // console.log(req.cookies);
@@ -59,7 +100,7 @@ app.get("/", verifyUser, (req, res) => {
 
 // 2. user page
 const userRouter = require("./routes/userRouter");
-app.use("/user", userRouter);
+// app.use("/user", userRouter);
 
 // **************************
 // listening the port at port no 3000
